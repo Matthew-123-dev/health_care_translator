@@ -28,7 +28,7 @@ export default function Home() {
         setTranscript(currentTranscript.trim());
 
         if (event.results[event.results.length - 1].isFinal) {
-          const response = await axios.post("/translate", {
+          const response = await axios.post("https://health-care-translator.onrender.com/translate", {
             text: currentTranscript,
             targetLang: outputLang,
           });
@@ -71,7 +71,7 @@ export default function Home() {
   
     try {
       const response = await axios.post(
-        "/text-to-speech",
+        "https://health-care-translator.onrender.com/text-to-speech",
         { text: translation, lang: outputLang },
         { responseType: "blob" } // Expect (audio file)
       );
