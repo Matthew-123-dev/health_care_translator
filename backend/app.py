@@ -6,6 +6,7 @@ import re
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import os
+import logging
 
 def is_valid_language(lang):
     """Check if language code is valid (e.g., en, es, fr, de)."""
@@ -17,6 +18,8 @@ limiter = Limiter(get_remote_address, app=app, default_limits=["5 per second"])
 
 translator = Translator()
 
+logging.basicConfig(level=logging.INFO)
+
 @app.route("/")
 def home():
     return "Flask API is running successfully!"
@@ -27,6 +30,7 @@ def home():
 def translate_text():
     try:
         data = request.get_json()
+        logging.info(f"Received data: {data}")
 
         # Validate input
         if not data or "text" not in data or "targetLang" not in data:
@@ -46,12 +50,14 @@ def translate_text():
         return jsonify({"translation": translation})
 
     except Exception as e:
+        logging.error(f"Translation failed: {e}")
         return jsonify({"error": "Translation failed", "details": str(e)}), 500
     
 
 @app.route("/text-to-speech", methods=["POST"])
 def text_to_speech():
     data = request.json
+    logging.info(f"Received data: {data}")
     text = data.get("text", "")
     lang = data.get("lang", "en")
 

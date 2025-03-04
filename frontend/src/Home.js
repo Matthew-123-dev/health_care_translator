@@ -28,11 +28,13 @@ export default function Home() {
         setTranscript(currentTranscript.trim());
 
         if (event.results[event.results.length - 1].isFinal) {
+          console.log("Sending translation request:", currentTranscript, outputLang);
           const response = await axios.post("https://health-care-translator.onrender.com/translate", {
             text: currentTranscript,
             targetLang: outputLang,
           });
 
+          console.log("Received translation response:", response.data);
           setTranslation(response.data.translation);
           setAudioURL(null);
         }
@@ -68,14 +70,16 @@ export default function Home() {
 
   const handleSpeakClick = async () => {
     if (!translation) return;
-  
+
     try {
+      console.log("Sending text-to-speech request:", translation, outputLang);
       const response = await axios.post(
         "https://health-care-translator.onrender.com/text-to-speech",
         { text: translation, lang: outputLang },
         { responseType: "blob" } // Expect (audio file)
       );
-  
+
+      console.log("Received text-to-speech response:", response);
       const audioBlob = new Blob([response.data], { type: "audio/mp3" });
       const url = URL.createObjectURL(audioBlob);
       setAudioURL(url);
