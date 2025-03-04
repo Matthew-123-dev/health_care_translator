@@ -13,7 +13,7 @@ def is_valid_language(lang):
     return re.match(r"^[a-z]{2}(-[A-Z]{2})?$", lang) is not None
 
 app = Flask(__name__)
-CORS(app, resources = {r"/*":{"origins":"https://frontend-665v7tqaq-matthew-olagunjus-projects.vercel.app/"}})
+CORS(app, resources = {r"/*":{"origins":"https://frontend-eight-olive-37.vercel.app/"}})
 limiter = Limiter(get_remote_address, app=app, default_limits=["5 per second"])
 
 translator = Translator()
