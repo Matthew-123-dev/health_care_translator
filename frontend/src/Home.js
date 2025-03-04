@@ -29,14 +29,17 @@ export default function Home() {
 
         if (event.results[event.results.length - 1].isFinal) {
           console.log("Sending translation request:", currentTranscript, outputLang);
-          const response = await axios.post("https://health-care-translator.onrender.com/translate", {
-            text: currentTranscript,
-            targetLang: outputLang,
-          });
-
-          console.log("Received translation response:", response.data);
-          setTranslation(response.data.translation);
-          setAudioURL(null);
+          try {
+            const response = await axios.post("https://health-care-translator.onrender.com/translate", {
+              text: currentTranscript,
+              targetLang: outputLang,
+            });
+            console.log("Received translation response:", response.data);
+            setTranslation(response.data.translation);
+            setAudioURL(null);
+          } catch (error) {
+            console.error("Error during translation request:", error);
+          }
         }
       };
 
